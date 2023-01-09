@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .tabel{
+        border: 1px solid #333;
+    }
+
+    .tabel tr th,
+    .tabel tr td {
+        border:1px solid #333
+    }
+</style>
+<body>
+    <!-- <div id="konten"></div> -->
+
+    <table class = "tabel">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama depan</th>
+                <th>Nama belakang</th>
+                <th>JK</th>
+                <th>Usia</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="konten_tabel">
+
+        </tbody>
+    </table>
+    <button type="button" onclick="load_data()">Load Data</button>
+
+    <script>
+
+        function load_data() {
+        //membuat objek XMLHttpRequest
+        var xhttp = new XMLHttpRequest();
+
+        //ketika ada perubahan  request status
+        xhttp.onreadystatechange = function() {
+            console.log(this);
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(xhttp);
+                console.log(xhttp.responseText);
+
+                //menampilkan hasil request ke id konten
+                //document.getElementById('konten').innerHTML = xhttp.responseText
+
+                //parsing json
+                var data = JSON.parse(xhttp.responseText);
+                console.log(data);
+
+                //mengisi data ke data tabel
+                var dataTabel = '';
+                if(data.users){
+                    for(var i = 0; i < data.users.length; i++){
+                        //mengambil data berdasarkan index
+                        var data_item = data.users[i];
+                        dataTabel += '<tr>';
+                        dataTabel += '<td>'+ (i + 1) +'</td>';
+                        dataTabel += '<td>'+ data_item['firstName'] +'</td>';
+                        dataTabel += '<td>'+ data_item['lastName'] +'</td>';
+                        dataTabel += '<td>'+ data_item['gender'] +'</td>';
+                        dataTabel += '<td>'+ data_item['age'] +'</td>';
+                        dataTabel += '<td>'+ data_item['email'] +'</td>';
+                        dataTabel += '<tr>';
+                    }
+
+                    //menampilkan data ke tabel id konten_tabel
+                    document.getElementById('konten_tabel').innerHTML = dataTabel;
+                }
+            }
+        };
+
+        //Membuka request
+        xhttp.open("GET", "https://dummyjson.com/users", true);
+
+        
+        xhttp.send();
+    }
+    </script>
+
+</body>
+</html>
