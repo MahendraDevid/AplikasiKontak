@@ -1,37 +1,58 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from .forms import SekolahForm
-from django.template import loader
-from .models import Sekolah
-from django.contrib import messages
 
-def index(request):
+from .forms import SekolahForm
+from .models import Sekolah
+
+def update(request,update_id):
+    sekolah_update = Sekolah.objects.get(id=update_id)
+    
+    data = {
+        'npsn' : sekolah_update.npsn,
+        'nama':  sekolah_update.nama,
+        'email': sekolah_update.email,
+        'hp': sekolah_update.hp,
+        'alamat': sekolah_update.alamat,
+        'provinsi': sekolah_update.provinsi, 
+        'kabupaten_kota': sekolah_update.kabupaten_kota,
+        'kecamatan': sekolah_update.kecamatan,
+        'status': sekolah_update.status,
+    }
+    
+    sekolah_form = SekolahForm(request.POST or None, initial=data, instance=sekolah_update)
+    
+    if request.method == 'POST':
+        if sekolah_form.is_valid():
+            sekolah_form.save()
+            
+        return redirect('sekolah:list')
+    
+    context = {
+        "sekolah_form": sekolah_form,
+    }
+            
+    return render(request, 'sekolah/create.html', context)
+
+def delete(request, id):
+    Sekolah.objects.get(id=id).delete()
+    return redirect(request, 'sekolah:list')
+
+def create(request):
+    sekolah_form = SekolahForm(request.POST or None)
+    
+    if request.method == 'POST':
+        if sekolah_form.is_valid():
+            sekolah_form.save()
+            
+        return redirect('sekolah:list')
+    
+    context = {
+        "sekolah_form": sekolah_form,
+    }
+            
+    return render(request, 'sekolah/create.html', context)
+
+def list(request):
     sekolah_list = Sekolah.objects.all()
     return render(request, 'sekolah/sekolah.html', {'sekolah_list': sekolah_list})
 
-def create(request):
-    return render(request, 'sekolah/create.html', )
-
-def create_view(request):
-    # Mengecek method pada request
-    # Jika method-nya adalah POST, maka akan dijalankan
-    # proses validasi dan penyimpanan data
-    if request.method == 'POST':
-        # membuat objek dari class TaskForm
-        form = SekolahForm(request.POST)
-        # Mengecek validasi form
-        if form.is_valid():
-            # Membuat Task baru dengan data yang disubmit
-            new_task = SekolahForm(request.POST)
-            # Simpan data ke dalam table tasks
-            new_task.save()
-            # mengeset pesan sukses dan redirect ke halaman daftar task
-            messages.success(request, 'Sukses Menambah Task baru.')
-            return redirect('sekolah:index')
-    # Jika method-nya bukan POST
-    else:
-        # membuat objek dari class SekolahForm
-        form = SekolahForm()
-    # merender template form dengan memparsing data form
-    return render(request, 'sekolah/create.html', {'form': form})
 

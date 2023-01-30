@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'sekolah',
     'siswa',
     'perusahaan',
-    'widget_tweaks',
+    
 ]
 
 MIDDLEWARE = [
