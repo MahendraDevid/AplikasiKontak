@@ -3,8 +3,8 @@ from django.shortcuts import render,redirect
 from .forms import SekolahForm
 from .models import Sekolah
 
-def update(request,update_id):
-    sekolah_update = Sekolah.objects.get(id=update_id)
+def update(request,id):
+    sekolah_update = Sekolah.objects.get(pk=id)
     
     data = {
         'npsn' : sekolah_update.npsn,
@@ -33,8 +33,8 @@ def update(request,update_id):
     return render(request, 'sekolah/create.html', context)
 
 def delete(request, id):
-    Sekolah.objects.get(id=id).delete()
-    return redirect(request, 'sekolah:list')
+    Sekolah.objects.get(pk=id).delete()
+    return redirect('sekolah:list')
 
 def create(request):
     sekolah_form = SekolahForm(request.POST or None)

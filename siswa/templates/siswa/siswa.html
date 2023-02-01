@@ -28,8 +28,8 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="{% static 'images/logo.svg' %}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{% static 'images/logo-mini.svg' %}" alt="logo"/></a>
+          <a class="navbar-brand brand-logo" href="index.html">Kontak</a>
+          <a class="navbar-brand brand-logo-mini" href="index.html">Kontak</a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -44,8 +44,7 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              <img src="{% static 'images/faces/face5.jpg' %}" alt="profile"/>
-              <span class="nav-profile-name">admin</span>
+              <span class="nav-profile-name">{{user.username}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
 
@@ -87,13 +86,10 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex align-items-end flex-wrap">
                   <div class="mr-md-3 mr-xl-5">
-                    <h2>Contact</h2>
+                    <h2>Kontak Siswa</h2>
+                    
                   </div>
-                  <div class="d-flex">
-                    <i class="mdi mdi-home text-muted hover-cursor"></i>
-                    <p class="text-muted mb-0 hover-cursor">&nbsp;/&nbsp;sekolah&nbsp;/&nbsp;</p>
-                    {% comment %} <p class="text-primary mb-0 hover-cursor">Analytics</p> {% endcomment %}
-                  </div>
+                
                 </div>
                 <div class="d-flex justify-content-between align-items-end flex-wrap">
                   <a href="create/" class="btn btn-primary">Tambah</a>
@@ -113,35 +109,33 @@
                       <thead>
                         <tr>
                             <th>NO</th>
-                            <th>NPSN</th>
                             <th>Nama</th>
                             <th>Email</th>
                             <th>HP</th>
                             <th>Alamat</th>
-                            <th>Provinsi</th>
-                            <th>Kabupaten Kota</th>
-                            <th>Kecamatan</th>
-                            <th>Status</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Tempat Lahir</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Nisn</th>
                             <th colspan="2" style="text-align: center;">Aksi<th>
 
                         </tr>
                       </thead>
                       <tbody>
 
-                        {% for sekolah in sekolah_list %}
+                        {% for siswa in siswa_list %}
                         <tr>
                           <td>{{ forloop.counter}}</td>
-                            <td>{{ sekolah.npsn }}</td>
-                            <td>{{ sekolah.nama }}</td>
-                            <td>{{ sekolah.email }}</td>
-                            <td>{{ sekolah.hp}}</td>
-                            <td>{{ sekolah.alamat }}</td>
-                            <td>{{ sekolah.provinsi }}</td>
-                            <td>{{ sekolah.kabupaten_kota }}</td>
-                            <td>{{ sekolah.kecamatan }}</td>
-                            <td>{{ sekolah.status }}</td>
-                            <td><a class="btn btn-warning" href="edit/">Edit</a></td>
-                            <td><a class="btn btn-danger" href="delete/">Delete</a></td>
+                            <td>{{ siswa.nama }}</td>
+                            <td>{{ siswa.email }}</td>
+                            <td>{{ siswa.hp}}</td>
+                            <td>{{ siswa.alamat }}</td>
+                            <td>{{ siswa.jenis_kelamin }}</td>
+                            <td>{{ siswa.tempat_lahir }}</td>
+                            <td>{{ siswa.tanggal_lahir }}</td>
+                            <td>{{ siswa.nisn }}</td>
+                            <td><a class="btn btn-warning" href="{% url 'siswa:update' siswa.id %}">Edit</a></td> 
+                            <td><a class="btn btn-danger" href="{% url 'siswa:delete' siswa.id %}" onclick="return confirm('Data Ini Akan Dihapus Secara Permanen,Anda yakin mau menghapus data ini?');">Delete</a></td>
                         </tr>
                         {% endfor %}
                       
@@ -155,11 +149,6 @@
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 <a href="https://www.urbanui.com/" target="_blank">Urbanui</a>. All rights reserved.</span>
-          </div>
-        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
